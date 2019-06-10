@@ -143,7 +143,7 @@ das System in transformierten Koordinaten z explizit an.
      \end{enumerate}
  \end{enumerate}
 \end{task}
-\begin{task}{Beobachtbarkeit und Beobachterentwurf}
+\begin{task}[Beobachtbarkeit und Beobachterentwurf]
 Für das LTI-System
 \[\begin{aligned} \dot{\mathbf{x}} &=\left[\begin{array}{cc}{2} & {0} \\ {-2} & {-1}\end{array}\right] \mathbf{x}+\left[\begin{array}{c}{1} \\ {0}\end{array}\right] u \\ y &=\left[\begin{array}{cc}{2} & {0}\end{array}\right] \mathbf{x}-3 u \end{aligned}\]
 soll ein vollständiger Beobachter entworfen werden. Bearbeiten Sie dazu folgende Unterpunkte
@@ -151,15 +151,153 @@ soll ein vollständiger Beobachter entworfen werden. Bearbeiten Sie dazu folgend
     \item Können die Eigenwerte des Fehlersystems durch geeignete Wahl von $\hat{\mathrm{k}}$ beliebig
 platziert werden? Falls NEIN, geben Sie die nicht beeinflussbaren Eigenwerte des
 Fehlersystems an. \emph{Begründung!}
+\begin{solution}
+Die Eigenwerte des Fehlersystems k¨onnen genau dann durch geeignete Wahl von $\hat{\mathrm{k}}$ beliebig platziert werden, wenn das System vollständig beobachtbar ist.
+
+Prüfung der Beobachtbarkeit:
+\[\mathbf{M}_O = 
+     \begin{pmatrix} \mathbf{c}^T \\ \mathbf{c}^T \mathbf{A} \end{pmatrix} = 
+     \begin{pmatrix} 2 & 0 \\ 4 & 0  \end{pmatrix}, \quad
+     \text{Rank}\left(\mathbf{M}_O\right) = 1 \neq n \rightarrow \text{System ist nicht vollst. beobachtbar}
+\]
+Das System ist bereits in einen beobachtbaren und einen nicht-beobachtbaren Teil zerlegt. 
+Der Eigenwert des nicht-beobachtbaren Teilsystems, der nicht verändert werden kann, liegt bei $-1$ (Untermatrix $\mathbf{A}_{22}$).
+\end{solution}
 \item Geben Sie das Fehlersystem für die Wahl $\hat{\mathbf{k}}=\left[\begin{array}{cc}{-2} & {2}\end{array}\right]^{\top}$ an.
+\begin{solution}
+Das Fehlersystem ist definiert als:
+\[ 
+\dot{\mathbf{e}}=\left(\mathbf{A}+\hat{\mathbf{k}} \mathbf{c}^{T}\right) \mathbf{e},
+\quad \mathbf{A}+\hat{\mathbf{k}} \mathbf{c}^{T} = 
+\begin{pmatrix}
+2 & 0 \\
+-2 & -1
+\end{pmatrix} +
+\begin{pmatrix}
+-4 & 0 \\
+4 & 0
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2 & 0 \\
+2 & -1
+\end{pmatrix}
+ \]
+\end{solution}
 \item Der Beobachter wird als dynamisches System der Form
 \[\begin{aligned} \dot{\mathbf{z}} &=\mathbf{A}_{B} \mathbf{z}+\mathbf{B}_{B} \mathbf{w} \\ \hat{\mathbf{x}} &=\mathbf{C}_{B} \mathbf{z}+\mathbf{D}_{B} \mathbf{w} \end{aligned}\]
 mit dem Zustand z und dem Eingang w implementiert. Geben Sie w sowie die
 Matrizen $\mathbf{A}_{B}, \mathbf{B}_{B}, \mathbf{C}_{B}$ und $\mathbf{D}_{B}$ unter Verwendung von $\hat{\mathbf{k}}$ aus Punkt (ii) explizit
 an.
 
-\end{enumerate}
+\begin{solution}
+Der Eingang $\mathbf{w}$ des Beobachters besteht aus dem Eingang des Systems und dem Ausgang des Systems:
+\[\mathbf{w} = \begin{pmatrix}
+u \\ y
+\end{pmatrix}
+\]
+Der Zustandsvektor $\mathbf{z}$ des Beobachters entspricht einer Schätzung des Zustandsvektors $\mathbf{x}$:
+\[\mathbf{z} = \begin{pmatrix}
+z_1 \\ z_2
+\end{pmatrix}
+\]
+Auflistung der Matrizen:
+\[
+\begin{aligned}
+\mathbf{A}_B &= \mathbf{A}+\hat{\mathbf{k}} \mathbf{c}^{T} = \begin{pmatrix}
+-2 & 0 \\
+2 & -1
+\end{pmatrix}, &\quad
+\mathbf{B}_B &= 
+\begin{pmatrix}
+\mathbf{b}+\hat{\mathbf{k}} d &  - \hat{\mathbf{k}}
+\end{pmatrix}
+= \begin{pmatrix}
+7 & 2 \\
+6 & -2
+\end{pmatrix},\\
+\mathbf{C}_B &= \mathbf{E},
+&
+\mathbf{D}_B &= \mathbf{0}
+\end{aligned}
+\]
+\end{solution}
 
+\end{enumerate}
+\end{task}
+
+\begin{task}
+Betrachten Sie das LTI-System
+\[ 
+\begin{aligned} \dot{\mathbf{x}} &=\mathbf{A} \mathbf{x}+\mathbf{b} u \\ y &=\mathbf{c}^{\top} \mathbf{x} \end{aligned}
+ \]
+mit den Matrizen
+\[ 
+\mathbf{A}=\left[\begin{array}{ccc}{0} & {1} & {0} \\ {0} & {-1} & {1} \\ {-1} & {-1} & {0}\end{array}\right], \quad \mathbf{b}=\left[\begin{array}{c}{1} \\ {2} \\ {0}\end{array}\right], \quad \mathbf{c}^{T}=\left[\begin{array}{lll}{1} & {1} & {0}\end{array}\right]
+ \]
+ \begin{enumerate}[i]
+     \item Bestimmen Sie den nichtbeobachtbaren Unterraum $\mathcal{O}^{\perp} \subseteq \mathbb{R}^{3}$
+     \begin{solution}
+     \[\mathcal{O}^{\perp} =  \text{Ker}\left(\mathbf{M}_O\right); \ \mathbf{M}_O = 
+     \begin{pmatrix} \mathbf{c}^T \\ \mathbf{c}^T \mathbf{A} \\ \mathbf{c}^T \mathbf{A}^2 \end{pmatrix} = 
+     \begin{pmatrix} 1 & 1 & 0 \\ 0 & 0 & 1 \\ -1 & -1 & 0 \end{pmatrix}\]
+     \[ \mathcal{O}^{\perp}=\text{Ker}\left(\mathbf{M}_O\right) = \text{span}\left\{\begin{pmatrix} 1\\-1\\ 0\end{pmatrix}\right\}\]
+     \end{solution}
+     \item Prüfen Sie, welche der Transformationen $\mathbf{z}=\mathbf{M}_{i}\mathrm{x}$, $i=1,2,3$ geeignet sind, um
+das System in ein nichtbeobachtbares Teilsystem und ein Restsystem zu transformieren.
+Begrunden Sie Ihr Auswahl ohne die Transformation explizit durchzuführen!
+\[ 
+\mathbf{M}_{1}=\left[\begin{array}{ccc}{3} & {3} & {0} \\ {3} & {3} & {1} \\ {0} & {-1} & {0}\end{array}\right], \quad \mathbf{M}_{2}=\left[\begin{array}{ccc}{1} & {2} & {0} \\ {2} & {-2} & {0} \\ {0} & {-3} & {1}\end{array}\right], \quad \mathbf{M}_{3}=\left[\begin{array}{ccc}{1} & {1} & {0} \\ {0} & {0} & {1} \\ {-1} & {-1} & {0}\end{array}\right]
+ \]
+ \begin{solution}
+ Zuerst muss eine Basis für $\mathcal{O}$ gefunden werden:
+ \[ \mathcal{O} = \text{span}\left\{ 
+ \begin{pmatrix} 1 & 1 & 0 \end{pmatrix},
+ \begin{pmatrix} 0 & 0 & 1 \end{pmatrix}
+ \right\} \]
+ und ein Vektor der diese Basis komplementiert: $\mathbf{v}_3 = \begin{pmatrix} 0 & 1 & 0 \end{pmatrix}$
+ 
+ 
+ Damit kann die Transformationsmatrix gebildet werden:
+ \[ 
+\left[\begin{array}{l}{\mathbf{z}_{1}} \\ {\mathbf{z}_{2}}\end{array}\right]=\left[\begin{array}{c}{\mathbf{V}_{1}} \\ {\mathbf{V}_{2}}\end{array}\right] \mathbf{x}, \quad 
+\underbrace{
+\mathbf{V}_{1} = 
+\begin{pmatrix}
+1&1&0\\
+0&0&1\\
+\end{pmatrix}}_{\text{Basisvektoren für }\mathcal{O}}, \quad
+\underbrace{
+\mathbf{V}_{2} = 
+\begin{pmatrix}
+0&1&0\\
+\end{pmatrix}}_{\text{Komplementärvektoren}}
+ \]
+ Von den drei Matrizen erfüllt nur die Matrix $\mathbf{M}_1$ diese Struktur.
+ 
+ \underline{Explizite Transformation als Beweis ($\mathbf{M}_1 = \mathbf{V}$):}
+ \[ \begin{aligned}\dot{\mathbf{z}} &= \mathbf{V}\mathbf{A}\mathbf{V}^{-1}\mathbf{z}+\mathbf{V}\mathbf{b}u\\
+ y &= \mathbf{c}^T \mathbf{V}^{-1}\mathbf{z}
+ \end{aligned} \rightarrow
+ \begin{aligned}\dot{\mathbf{z}} &= 
+ \begin{pmatrix}
+ -3 & 3 & 0\\
+ \frac{-10}{3} & 3 & 0\\
+ 1 & -1 & -1
+ \end{pmatrix}
+ \mathbf{z}+
+ \begin{pmatrix}
+ 9\\9\\-2
+ \end{pmatrix}
+ u\\
+ y &= \begin{pmatrix}
+ \frac{1}{3}&0&0
+ \end{pmatrix}\mathbf{z}
+ \end{aligned}
+ \]
+ Man erkennt, dass sich der dritte Eintrag des Zustandsvektor nicht auf die ersten beiden auswirkt (Dynamikmatrix $\mathbf{A}$) und der dritte Zustand nicht direkt messbar ist (Ausgangsmatrix $\mathbf{c}^T$). Somit ist der dritte Zustand nicht beobachtbar.
+ \end{solution}
+ \end{enumerate}
 \end{task}
 
 \end{document}
