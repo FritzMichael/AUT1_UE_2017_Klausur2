@@ -1,0 +1,78 @@
+\documentclass[crop=false]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pdfpages}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage[framemethod=default]{mdframed}
+\usepackage[nomarginpar,left=2cm,right=2cm,top = 2cm, bottom = 2cm]{geometry}
+
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesection.\alph{subsection}.\roman{subsubsection}}
+
+\mdfdefinestyle{theoremstyle}{%
+linecolor=black,linewidth=.3pt,%
+frametitlerule=true,%
+frametitlebackgroundcolor=blue!5,
+innertopmargin=\topskip,nobreak=true,
+}
+
+\mdfdefinestyle{style2}{frametitle={},%
+             linewidth=.3pt,topline=true,backgroundcolor=blue!3!green!8!}
+
+\mdtheorem[style=theoremstyle]{task}{Angabe}
+
+\newmdenv[style = style2,title=false]{solution}
+
+\begin{document}
+\begin{task}[Stabilität und Linearisierung]
+Gegeben ist das stark vereinfachte Modell eines Hydraulikzylinders mit Proportionalventil
+
+\[ 
+\begin{aligned} \dot{x} &=v \\ \dot{v} &=\frac{1}{m}(A p-d v-F) \\ \dot{p} &=\frac{\beta}{A x}\left(Q_{N} \sqrt{\frac{p_{s}-p}{p_{N}}} u-A v\right) \end{aligned}
+ \]
+mit dem Zustand $\mathbf{x}=\left[\begin{array}{ccc}{x} & {v} & {p}\end{array}\right]^{\top},$ dem Eingang $u$ und positiven Konstanten
+$m, A, d, F, \beta, Q_{N}, p_{N}, p_{s}>0 .$ Weiters gelte $p_{s}-p>0$.
+\begin{enumerate}[i]
+    \item Linearisieren Sie das System um die Ruhelage $\mathbf{x}_{s}=\left[\begin{array}{ccc}{x_{0}} & {0} & {\frac{F}{A}}\end{array}\right]^{\top}, u_{s}=0$.
+    \begin{solution}
+    \[ 
+\mathbf{A}=\frac{\partial}{\partial \mathbf{x}} \mathbf{f}\left(\mathbf{x}_{s}, \mathbf{u}_{s}\right) = 
+\begin{pmatrix}
+ 0 & 1 & 0\\
+ 0 & -\frac{d}{m} & \frac{A}{m}\\
+ 0 & -\frac{\beta}{x_0} & 0
+\end{pmatrix}
+ \]
+    \[
+    \mathbf{B}=\frac{\partial}{\partial u} \mathbf{f}\left(\mathbf{x}_{s}, \mathbf{u}_{s}\right) = 
+    \begin{pmatrix}
+ 0\\
+ 0\\
+ \frac{\beta}{A x_0} Q_N \sqrt{\frac{p_s - \frac{F}{A}}{p_N}}
+\end{pmatrix}
+ \]
+ \[\dot{\mathbf{x}}= \mathbf{A} \Delta \mathbf{x} + \mathbf{B} \Delta u \]
+    \end{solution}
+    \item Treffen Sie anhand der Eigenwerte des linearisierten Systems eine Aussage über
+dessen Stabilität. (Es gelte $x_{0}>0 )$
+\begin{solution}
+    Charakteristisches Polynom der Matrix $\mathbf{A}$:
+    \[\lambda^2 \left(-\lambda-\frac{d}{m}\right) - \lambda \frac{\beta A}{x_0 m} = 0 \rightarrow \lambda_1 = 0\]
+    \[
+    \lambda^2+\lambda \frac{d}{m}+\frac{\beta A}{x_0 m} = 0 \quad \lambda_{2,3} = \frac{-\frac{d}{m} \pm \sqrt{\frac{d^2}{m^2}-4\frac{\beta A}{x_0 m}}}{2} =
+    \frac{-d \pm \sqrt{d^2-4\frac{\beta A m}{x_0}}}{2m}
+    \]
+    Die Diskriminante ist immer $< d^2$ oder negativ (was zu komplex, konjugierten Eigenwerten führt) $\rightarrow$ Die Realteile der Eigenwerte $\lambda_{2,3}$ sind also stets negativ.
+    
+    Das linearisierte System ist damit stabil, aber nicht asymptotisch stabil (Eigenwert $\lambda_1$ bei 0).
+    \end{solution}
+    \item Treffen Sie anhand der Eigenwerte des linearisierten Systems eine Aussage über
+die Stabilität des nichtlinearen Systems. (Es gelte $x_{0}>0 )$
+\begin{solution}
+    Keine Aussage möglich, da die Realteile aller Eigenwerte $\leq 0$ sind und der Realteil von mindestens einem Eigenwert = 0. (Satz 7.4 im Übungsskript)
+    \end{solution}
+\end{enumerate}
+\end{task}
+\end{document}

@@ -1,0 +1,81 @@
+\documentclass[crop=false]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pdfpages}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage[framemethod=default]{mdframed}
+\usepackage[nomarginpar,left=2cm,right=2cm,top = 2cm, bottom = 2cm]{geometry}
+
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesection.\alph{subsection}.\roman{subsubsection}}
+
+\mdfdefinestyle{theoremstyle}{%
+linecolor=black,linewidth=.3pt,%
+frametitlerule=true,%
+frametitlebackgroundcolor=blue!5,
+innertopmargin=\topskip,nobreak=true,
+}
+
+\mdfdefinestyle{style2}{frametitle={},%
+             linewidth=.3pt,topline=true,backgroundcolor=blue!3!green!8!}
+
+\mdtheorem[style=theoremstyle]{task}{Angabe}
+
+\newmdenv[style = style2,title=false]{solution}
+
+\begin{document}\begin{task}[Erreichbarkeit und Zustandsregler]
+Betrachten Sie das LTI-System
+
+$$ 
+\begin{aligned} \dot{\mathbf{x}} &=\mathbf{A x}+\mathbf{b} u, \quad \mathbf{x}(0)=\mathbf{x}_{0} \\ y &=\mathbf{c}^{T} \mathbf{x} \end{aligned}
+ $$
+mit den Matrizen
+ $$ 
+\mathbf{A}=\left[\begin{array}{cc}{1} & {2} \\ {-1} & {0}\end{array}\right], \quad \mathbf{b}=\left[\begin{array}{l}{1} \\ {0}\end{array}\right], \quad \mathbf{c}^{\top}=\left[\begin{array}{ll}{2} & {0}\end{array}\right]
+ $$
+ \begin{enumerate}[i]
+  \item Zeigen Sie, dass das System vollständig erreichbar ist
+\begin{solution}
+Es ist zu prüfen ob die Matrix $\mathbf{M}_R = \left[\mathbf{b}, \mathbf{Ab} \right]$ vollen Rang besitzt.
+
+\[ \text{rank}\left(\mathbf{M}_R\right) = \text{rank}\left(\begin{pmatrix} 1 & 1 \\ 0 & -1 \end{pmatrix}\right)=2=n \rightarrow \text{vollständig erreichbar}\]
+\end{solution}
+  \item Berechnen Sie mit Hilfe der Formel von Ackermann einen Zustandsregler so, dass
+die Eigenwerte des geschlossenen Kreises bei $\{-2,-2\}$ liegen.
+\begin{solution}
+Mit Hilfe der Formel von Ackermann kann der Rückführvektor $\mathbf{k}^{T}$ direkt aus
+\[ 
+\mathbf{k}^{T}=-\alpha_{0} \mathbf{t}_{1}^{T}-\alpha_{1} \mathbf{t}_{1}^{T} \mathbf{A}-\cdots-\alpha_{n-1} \mathbf{t}_{1}^{T} \mathbf{A}^{n-1}-\mathbf{t}_{1}^{T} \mathbf{A}^{n}
+ \]
+ berechnet werden. Für $\mathbf{t}_{1}^{T}$ gilt $\mathbf{e}_{n}^{T}=\mathbf{t}_{1}^{T} \mathbf{M}_{R}$.
+ 
+ $\mathbf{t}_{1}^{T}$ ist also $\begin{pmatrix} 0 & -1\end{pmatrix}$.\\ Die Koeffizienten $\alpha_i$ sind die Koeffizienten des charakteristischen Polynoms:
+ \[ 
+p(s)=\alpha_{0}+\alpha_{1} s+\cdots+\alpha_{n-1} s^{n-1}+s^{n}
+ \]
+ Durch die Polvorgabe ergibt sich folgendes charakteristische Polynom:
+  \[ 
+p(s)=(\lambda+2)(\lambda+2)= 4+4\lambda+\lambda^2 \rightarrow \alpha_0 = 4, \alpha_1 = 4
+ \]
+ Damit kann $\mathbf{k}^{T}$ berechnet werden:
+ \[ 
+\mathbf{k}^{T}=-\alpha_{0} \mathbf{t}_{1}^{T}-\alpha_{1} \mathbf{t}_{1}^{T} \mathbf{A}-\mathbf{t}_{1}^{T} \mathbf{A}^{2}
+ \]
+ \[
+ \mathbf{k}^{T}=-4 \begin{pmatrix} 0 & -1\end{pmatrix}-4 \begin{pmatrix} 0 & -1\end{pmatrix} \left[\begin{array}{cc}{1} & {2} \\ {-1} & {0}\end{array}\right]-\begin{pmatrix} 0 & -1\end{pmatrix} \left[\begin{array}{cc}{1} & {2} \\ {-1} & {0}\end{array}\right]^{2}
+ \]
+  \[
+ \mathbf{k}^{T}=-4 \begin{pmatrix} 0 & -1\end{pmatrix}-4 \begin{pmatrix} 1 & 0\end{pmatrix} -\begin{pmatrix} 1 & 2\end{pmatrix} = \begin{pmatrix} -5 & 2\end{pmatrix}
+ \]
+\end{solution}
+  \item Geben Sie den Grenzwert $\lim _{t \rightarrow \infty} x_{1}(t)$ für den geschlossenen Kreis mit
+$\mathrm{x}_{0}=[2,-1]^{\top}$ an.
+\begin{solution}
+Im geschlossenen Kreis handelt es sich um ein stabiles System mit negativen Eigenwerten. Das System tendiert nach unendlich langer Zeit zum Zustand $\mathbf{x} = \mathbf{0}$.\\
+$\lim _{t \rightarrow \infty} x_{1}(t) = 0$
+\end{solution}
+\end{enumerate}
+\end{task}
+\end{document}

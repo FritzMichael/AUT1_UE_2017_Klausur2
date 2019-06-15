@@ -1,0 +1,111 @@
+\documentclass[crop=false]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pdfpages}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage[framemethod=default]{mdframed}
+\usepackage[nomarginpar,left=2cm,right=2cm,top = 2cm, bottom = 2cm]{geometry}
+
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesection.\alph{subsection}.\roman{subsubsection}}
+
+\mdfdefinestyle{theoremstyle}{%
+linecolor=black,linewidth=.3pt,%
+frametitlerule=true,%
+frametitlebackgroundcolor=blue!5,
+innertopmargin=\topskip,nobreak=true,
+}
+
+\mdfdefinestyle{style2}{frametitle={},%
+             linewidth=.3pt,topline=true,backgroundcolor=blue!3!green!8!}
+
+\mdtheorem[style=theoremstyle]{task}{Angabe}
+
+\newmdenv[style = style2,title=false]{solution}
+
+\begin{document}
+\begin{task}[Beobachtbarkeit und Beobachterentwurf]
+Für das LTI-System
+\[\begin{aligned} \dot{\mathbf{x}} &=\left[\begin{array}{cc}{2} & {0} \\ {-2} & {-1}\end{array}\right] \mathbf{x}+\left[\begin{array}{c}{1} \\ {0}\end{array}\right] u \\ y &=\left[\begin{array}{cc}{2} & {0}\end{array}\right] \mathbf{x}-3 u \end{aligned}\]
+soll ein vollständiger Beobachter entworfen werden. Bearbeiten Sie dazu folgende Unterpunkte
+\begin{enumerate}[i]
+    \item Können die Eigenwerte des Fehlersystems durch geeignete Wahl von $\hat{\mathrm{k}}$ beliebig
+platziert werden? Falls NEIN, geben Sie die nicht beeinflussbaren Eigenwerte des
+Fehlersystems an. \emph{Begründung!}
+\begin{solution}
+Die Eigenwerte des Fehlersystems k¨onnen genau dann durch geeignete Wahl von $\hat{\mathrm{k}}$ beliebig platziert werden, wenn das System vollständig beobachtbar ist.
+
+Prüfung der Beobachtbarkeit:
+\[\mathbf{M}_O = 
+     \begin{pmatrix} \mathbf{c}^T \\ \mathbf{c}^T \mathbf{A} \end{pmatrix} = 
+     \begin{pmatrix} 2 & 0 \\ 4 & 0  \end{pmatrix}, \quad
+     \text{Rank}\left(\mathbf{M}_O\right) = 1 \neq n \rightarrow \text{System ist nicht vollst. beobachtbar}
+\]
+Das System ist bereits in einen beobachtbaren und einen nicht-beobachtbaren Teil zerlegt. 
+Der Eigenwert des nicht-beobachtbaren Teilsystems, der nicht verändert werden kann, liegt bei $-1$ (Untermatrix $\mathbf{A}_{22}$).
+\end{solution}
+\item Geben Sie das Fehlersystem für die Wahl $\hat{\mathbf{k}}=\left[\begin{array}{cc}{-2} & {2}\end{array}\right]^{\top}$ an.
+\begin{solution}
+Das Fehlersystem ist definiert als:
+\[ 
+\dot{\mathbf{e}}=\left(\mathbf{A}+\hat{\mathbf{k}} \mathbf{c}^{T}\right) \mathbf{e},
+\quad \mathbf{A}+\hat{\mathbf{k}} \mathbf{c}^{T} = 
+\begin{pmatrix}
+2 & 0 \\
+-2 & -1
+\end{pmatrix} +
+\begin{pmatrix}
+-4 & 0 \\
+4 & 0
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2 & 0 \\
+2 & -1
+\end{pmatrix}
+ \]
+\end{solution}
+\item Der Beobachter wird als dynamisches System der Form
+\[\begin{aligned} \dot{\mathbf{z}} &=\mathbf{A}_{B} \mathbf{z}+\mathbf{B}_{B} \mathbf{w} \\ \hat{\mathbf{x}} &=\mathbf{C}_{B} \mathbf{z}+\mathbf{D}_{B} \mathbf{w} \end{aligned}\]
+mit dem Zustand z und dem Eingang w implementiert. Geben Sie w sowie die
+Matrizen $\mathbf{A}_{B}, \mathbf{B}_{B}, \mathbf{C}_{B}$ und $\mathbf{D}_{B}$ unter Verwendung von $\hat{\mathbf{k}}$ aus Punkt (ii) explizit
+an.
+
+\begin{solution}
+Der Eingang $\mathbf{w}$ des Beobachters besteht aus dem Eingang des Systems und dem Ausgang des Systems:
+\[\mathbf{w} = \begin{pmatrix}
+u \\ y
+\end{pmatrix}
+\]
+Der Zustandsvektor $\mathbf{z}$ des Beobachters entspricht einer Schätzung des Zustandsvektors $\mathbf{x}$:
+\[\mathbf{z} = \begin{pmatrix}
+z_1 \\ z_2
+\end{pmatrix}
+\]
+Auflistung der Matrizen:
+\[
+\begin{aligned}
+\mathbf{A}_B &= \mathbf{A}+\hat{\mathbf{k}} \mathbf{c}^{T} = \begin{pmatrix}
+-2 & 0 \\
+2 & -1
+\end{pmatrix}, &\quad
+\mathbf{B}_B &= 
+\begin{pmatrix}
+\mathbf{b}+\hat{\mathbf{k}} d &  - \hat{\mathbf{k}}
+\end{pmatrix}
+= \begin{pmatrix}
+7 & 2 \\
+-4 & -2
+\end{pmatrix},\\
+\mathbf{C}_B &= \mathbf{E},
+&
+\mathbf{D}_B &= \mathbf{0}
+\end{aligned}
+\]
+\end{solution}
+
+\end{enumerate}
+\end{task}
+\end{document}

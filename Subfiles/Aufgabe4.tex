@@ -1,0 +1,86 @@
+\documentclass[crop=false]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pdfpages}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage[framemethod=default]{mdframed}
+\usepackage[nomarginpar,left=2cm,right=2cm,top = 2cm, bottom = 2cm]{geometry}
+
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesection.\alph{subsection}.\roman{subsubsection}}
+
+\mdfdefinestyle{theoremstyle}{%
+linecolor=black,linewidth=.3pt,%
+frametitlerule=true,%
+frametitlebackgroundcolor=blue!5,
+innertopmargin=\topskip,nobreak=true,
+}
+
+\mdfdefinestyle{style2}{frametitle={},%
+             linewidth=.3pt,topline=true,backgroundcolor=blue!3!green!8!}
+
+\mdtheorem[style=theoremstyle]{task}{Angabe}
+
+\newmdenv[style = style2,title=false]{solution}
+
+\begin{document}
+\begin{task}
+Gegeben ist das System der Form
+\[ 
+\begin{aligned} \dot{\mathbf{x}} &=\left[\begin{array}{cc}{\alpha_{1}} & {0} \\ {0} & {\alpha_{2}}\end{array}\right] \mathbf{x}+\left[\begin{array}{c}{\beta_{1}} \\ {\beta_{2}}\end{array}\right] u \\ y &=\left[\begin{array}{ll}{1} & {2}\end{array}\right] \mathbf{x} \end{aligned}
+ \]
+ \begin{enumerate}[i]
+     \item Bestimmen Sie den Wertebereich für $\alpha_{1}, \alpha_{2}, \beta_{1}, \beta_{2}$ so, dass die Dimension des erreichbaren Unterraums dim $(\mathcal{R})=1$ gilt.
+     \begin{solution}
+     \[ \mathcal{R} = \text{span}\left(\mathbf{b},\mathbf{Ab}\right)\]
+     Damit dieser Vektorraum eindimensional wird, muss $\mathbf{b}$ linear abhängig von $\mathbf{Ab}$ sein, $\mathbf{b}$ also ein rechtseigenvektor von $\mathbf{A}$ sein.
+     \[\text{Dim}\left(\mathbf{M}_R\right)=
+     \text{Dim}\left(
+     \begin{pmatrix}
+     \beta_1 & \alpha_1 \beta_1 \\
+     \beta_2 & \alpha_2 \beta_2
+     \end{pmatrix}
+     \right)
+     \stackrel{!}{=} 1
+     \]
+     Um diese Bedingung zu erfüllen darf weder $\beta_1$ noch $\beta_2$ 0 sein, dies führte zu einer Nullmatrix mit Rang 0 führen.
+     \[\rightarrow \beta_1 \neq 0 \quad \beta_2 \neq 0\]
+     \end{solution}
+     \item Es gelte nun $\operatorname{dim}(\mathcal{R})=1, \alpha_{2}=2$ und $\beta_{1}=\beta_{2}=1$
+     \begin{enumerate}[A]
+         \item Bestimmen sie $\alpha_{1}$ und transformieren Sie das System in ein erreichbares Teilsystem und ein Restsystem. Geben Sie die Transformationsvorschrift sowie
+das System in transformierten Koordinaten z explizit an.
+\begin{solution}
+\[\text{Dim}\left(\mathbf{M}_R\right)=
+     \text{Dim}\left(
+     \begin{pmatrix}
+     1 & \alpha_1 \\
+     1 & 2
+     \end{pmatrix}
+     \right)
+     \stackrel{!}{=} 1 \rightarrow \alpha_1 = 2
+     \]
+     
+     Basis für den erreichbaren Zustandsraum: $\begin{pmatrix}1&1\end{pmatrix}^T$, Komplementärvektor um den ganzen $\mathbb{R}^2$ aufzuspannen: $\begin{pmatrix}0&1\end{pmatrix}^T$
+     
+     Transformationsmarix: $ V = \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix},V^{-1} = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}$
+     
+     \[\mathbf{x} = \mathbf{V}\mathbf{z}, \ \mathbf{V}^{-1}\mathbf{x} = \mathbf{z}\]
+     \[\dot{\mathbf{z}}=\mathbf{V}^{-1}\dot{\mathbf{x}} = \mathbf{V}\mathbf{A}^{-1}\mathbf{x} + \mathbf{V}^{-1}\mathbf{b}u = \underbrace{\mathbf{V}^{-1}\mathbf{A}\mathbf{V}}_{\overline{\mathbf{A}}}\mathbf{z} + \underbrace{\mathbf{V}^{-1}\mathbf{b}}_{\overline{\mathbf{b}}}u\]
+     \[y = \mathbf{c}^T \mathbf{x} = \underbrace{\mathbf{c}^T \mathbf{V}}_{\overline{\mathbf{c}^T}}\mathbf{z}\]
+     
+     Das transformierte System lautet explizit:
+     \[ \dot{\mathbf{z}} =  \overline{\mathbf{A}} z + \overline{\mathbf{b}}u = \begin{pmatrix}2&0\\0&2\end{pmatrix}z+\begin{pmatrix}1\\0\end{pmatrix}u\]
+     \[ y = \overline{\mathbf{c}^T}\mathbf{z} = \begin{pmatrix}3&2\end{pmatrix}\mathbf{z} \]
+     Das System ist nicht vollständig erreichbar. Der zweite Eintrag des Zustandsvektors wird durch ein autonomes Differentialgleichungssystem beschrieben. Weder der erste Zustand noch der Eingang $u$ haben eine Auswirkung auf dieses Teilsystem.
+\end{solution}
+        \item Ist das System stabilisierbar? \emph{Begründung!}
+        \begin{solution}
+        Das System ist \emph{nicht} stabilisierbar. Die Systemmatrix ($\mathbf{A}_{22})$ des nicht-erreichbaren Teilsystem müsste Hurwitz sein, hat hier jedoch den Eigenwert 2.
+        \end{solution}
+     \end{enumerate}
+ \end{enumerate}
+\end{task}
+\end{document}
