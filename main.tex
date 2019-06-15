@@ -8,6 +8,7 @@
 \usepackage[framemethod=default]{mdframed}
 \usepackage[nomarginpar,left=2cm,right=2cm,top = 2cm, bottom = 2cm]{geometry}
 \usepackage{standalone}
+\usepackage{hyperref}
 \usepackage{import}
 
 \renewcommand{\thesubsection}{\thesection.\alph{subsection}}
@@ -27,10 +28,16 @@ innertopmargin=\topskip,nobreak=true,
 
 \newmdenv[style = style2,title=false]{solution}
 
+\mdfdefinestyle{style3}{frametitle={},%
+             linewidth=.3pt,topline=true,backgroundcolor=red!15}
+
+\newmdenv[style = style3,title=false]{disclaimer}
+
 \begin{document}
 
 \includepdf[pages=-]{KlausurA_2017_06_29_nachtrKorrigiert}
 
+\import{Subfiles/}{Disclaimer}
 \import{Subfiles/}{Aufgabe1}
 \import{Subfiles/}{Aufgabe2}
 \import{Subfiles/}{Aufgabe3}
